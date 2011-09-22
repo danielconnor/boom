@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>CSS-Transform - BOOM!</title>
+    <script type="text/javascript" src="js/letters-go-boom.js"></script>
+    <link href="css/boom.css" rel="Stylesheet" type="text/css" />
+</head>
+<body onload="boom(document.getElementById('text'));">
+    <section id="info">
+        <h1>
+            <span>B</span>
+            <span>O</span>
+            <span>O</span>
+            <span>M</span>
+            <span>!</span>
+        </h1>
+        <br />
+        <a id="bookmarklet" href='javascript:(function(){var r=document.createElement("style");r.textContent=".boom { display:inline-block; } .boom > span { -webkit-transition-property: -webkit-transform; -webkit-transition-duration: 0.8s;  -webkit-transition-timing-function: ease-in-out; -moz-transition-property: -moz-transform; -moz-transition-duration: 0.7s;  -moz-transition-timing-function: ease-in-out; display:inline-block;}";document.querySelector("body").appendChild(r);const BOX_SIZE=100,MIN_BLAST_RADIUS=100;Element.prototype.__defineGetter__("totalOffsetLeft",function(){var a=0;for(var b=this;b;b=b.offsetParent)a+=b.offsetLeft+(this!==b?b.clientLeft:0);return a});Element.prototype.__defineGetter__("totalOffsetTop",function(){var a=0;for(var b=this;b;b=b.offsetParent)a+=b.offsetTop+(this!==b?b.clientTop:0);return a});NodeList.prototype.each=HTMLCollection.prototype.each=function(a){for(var i=0;i<this.length;i++){a.call(this[i])}return this};NodeList.prototype.toArray=function(){var a=[];this.each(function(){a.push(this)});return this};Node.prototype.replace=function(a){if(this.parentNode){this.parentNode.replaceChild(a,this);return true}else{return false}};Node.prototype.remove=function(){if(this.parentNode!=null){this.parentNode.removeChild(this)}};function distance(a,b,c,d){return Math.sqrt(Math.pow(c-a,2)+Math.pow(d-b,2))||0};function LettersGoBoom(g){var h=this;fragments={};var j=function(){if(this.reset){this.style.WebkitTransitionDelay=this.style.MozTransitionDelay=(Math.random()+1)+"s";this.style.WebkitTransform=this.style.MozTransform="translate(0px,0px) rotate(0deg)";this.reset=false}else{this.x=this.y=0;this.style.WebkitTransitionDelay=this.style.MozTransitionDelay="0s"}};var k=function(a){var b=Math.floor(a.offsetX/BOX_SIZE)+":"+Math.floor(a.offsetY/BOX_SIZE);if(!fragments[b]){fragments[b]=[]}fragments[b].push(a)};var l=function(a){var b=a.textContent.trim().split(" "),nextChild=a.nextSibling;if(b.length){for(var q=0;q<b.length;q++){var c=b[q].split("");if(c.length>0){var d=document.createElement("span");d.className="boom";a.textContent[0]==" "&&a.parentNode.insertBefore(document.createTextNode(" "),a);var e=[];for(var p=0;p<c.length;p++){var f=document.createElement("span");f.textContent=c[p];f.x=f.y=0;d.appendChild(f);e.push(f);f.addEventListener("webkitTransitionEnd",j,false);f.addEventListener("transitionend",j,false)}a.parentNode.insertBefore(d,a);for(var t=0;t<e.length;t++){e[t].offsetX=e[t].totalOffsetLeft;e[t].offsetY=e[t].totalOffsetTop;k(e[t])}a.parentNode.insertBefore(d,a);if(q<b.length-1||a.textContent[a.textContent.length-1]==" ")a.parentNode.insertBefore(document.createTextNode(" "),a)}}a.remove()}return nextChild};var m=function(a,x,y){for(var i=0;i<a.length;i++){var b=a[i];if(distance(x,y,b.offsetX+b.x,b.offsetY+b.y)<MIN_BLAST_RADIUS){var c=b.offsetX-x,yOffset=b.offsetY-y,radians=Math.atan2(yOffset+b.y,c+b.x),blastRadius=MIN_BLAST_RADIUS+(MIN_BLAST_RADIUS*Math.random()),targetX=(blastRadius*Math.cos(radians))-c,targetY=(blastRadius*Math.sin(radians))-yOffset;b.x=targetX;b.y=targetY;var d="translate("+targetX+"px,"+targetY+"px) rotate("+Math.random()*360+"deg)";b.style.cssText=";-webkit-transition-delay: 0s; -moz-transition-delay: 0s; -webkit-transform:"+d+"; -moz-transform:"+d+";";b.reset=true}}};var n=function(x,y){var a=Math.floor(x/BOX_SIZE),boxY=Math.floor(y/BOX_SIZE),boxXR=x%BOX_SIZE,boxYR=y%BOX_SIZE,box=a+":"+boxY;if(fragments[box])m(fragments[box],x,y);if(boxXR<MIN_BLAST_RADIUS){box=(a-1)+":"+(boxY);if(fragments[box])m(fragments[box],x,y)}if(boxXR>BOX_SIZE-MIN_BLAST_RADIUS){box=(a+1)+":"+(boxY);if(fragments[box])m(fragments[box],x,y)}if(boxYR<MIN_BLAST_RADIUS){box=(a)+":"+(boxY-1);if(fragments[box])m(fragments[box],x,y)}if(boxYR>BOX_SIZE-MIN_BLAST_RADIUS){box=(a)+":"+(boxY+1);if(fragments[box])m(fragments[box],x,y)}if(boxXR<MIN_BLAST_RADIUS&&boxYR<MIN_BLAST_RADIUS){box=(a-1)+":"+(boxY-1);if(fragments[box])m(fragments[box],x,y)}if(boxXR>BOX_SIZE-MIN_BLAST_RADIUS&&boxYR>BOX_SIZE-MIN_BLAST_RADIUS){box=(a+1)+":"+(boxY+1);if(fragments[box])m(fragments[box],x,y)}if(boxYR<MIN_BLAST_RADIUS&&boxXR>BOX_SIZE-MIN_BLAST_RADIUS){box=(a+1)+":"+(boxY-1);if(fragments[box])m(fragments[box],x,y)}if(boxYR>BOX_SIZE-MIN_BLAST_RADIUS&&boxXR<MIN_BLAST_RADIUS){box=(a-1)+":"+(boxY+1);if(fragments[box])m(fragments[box],x,y)}};document.addEventListener("mousedown",function(e){n(e.clientX,e.clientY+window.pageYOffset)},false);var o=function(a){if(a.nodeName=="STYLE"||a.nodeName=="SCRIPT")return;var b=a.firstChild;while(b){if(b instanceof Text){b=l(b)}else{o(b);b=b.nextSibling}}};o(g)};var s=new LettersGoBoom(document.body)})()' title="Drag me to your bookmarks!">Drag me to your bookmarks and use me on any site!</a>
+    </section>
+    <p id="text">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum. In anim proident, laboris commodo ex amet,
+        ipsum adipisicing Lorem quis Duis fugiat laborum. laboris amet, sit do commodo ex
+        commodo consectetur anim voluptate et mollit dolore ut quis culpa amet, do non do
+        ipsum consectetur consectetur culpa veniam, ut enim magna consectetur eu voluptate
+        nulla non ea ex occaecat irure Lorem in occaecat incididunt. Laborum. ut do adipisicing
+        mollit eu non aute exercitation deserunt consectetur irure irure ut in aliquip consectetur
+        adipisicing officia aliquip sit nisi incididunt in pariatur. dolore aliqua. ea eiusmod
+        consequat. dolore occaecat consequat. anim ex ullamco dolore aliqua. voluptate nisi
+        amet, cillum qui voluptate velit consequat. in laborum. sint non officia irure occaecat
+        sunt consequat. culpa ut cillum aute laboris dolore ea dolor undefined. Anim dolor
+        voluptate sunt ex veniam, dolor sed consectetur cupidatat est non dolore sit do
+        consectetur labore labore nisi nulla qui dolor consequat. sit in occaecat ut deserunt
+        veniam, sint fugiat incididunt in non culpa proident, sed commodo eiusmod ad fugiat
+        veniam, nulla sit qui adipisicing ipsum in eiusmod nulla Ut minim qui in sunt in
+        Ut officia sint enim aliquip exercitation tempor nisi ea ut Duis cillum. Veniam,
+        fugiat exercitation dolor reprehenderit et elit, consectetur occaecat amet, in ea
+        incididunt velit id do in quis magna Duis elit, ex commodo qui quis eu aliquip in
+        elit, enim ex cillum sit id anim Duis nostrud anim non Lorem Lorem cillum velit
+        dolore occaecat esse ea enim cupidatat dolor sunt. Proident, ex proident, ad sit
+        magna amet, est dolor officia ullamco non quis est proident, non elit, veniam, dolor
+        nostrud eiusmod incididunt commodo eu velit labore eu do in in do fugiat occaecat
+        aute anim do irure aliqua. magna ad anim sed proident, veniam, quis consequat. ut
+        quis aliqua. deserunt occaecat fugiat labore velit sint. Non adipisicing irure culpa
+        elit, ullamco in in tempor dolore adipisicing pariatur. nisi deserunt deserunt nisi
+        velit sit in incididunt nulla magna culpa Duis culpa eu qui qui anim id eu minim
+        irure consequat. laboris consectetur aliquip commodo amet, sunt Ut culpa officia
+        ut ea nisi nulla aliquip minim occaecat in voluptate minim proident, ex ullamco
+        consequat. ut eiusmod non eu laborum. Duis deserunt incididunt aute. Ut incididunt
+        nisi qui velit nostrud magna laboris ad non elit, veniam, et velit incididunt dolor
+        sunt cupidatat ex proident, tempor Duis in dolor Ut tempor sint adipisicing ad amet,
+        ad veniam, dolore culpa aliquip sed nulla mollit aliquip nostrud deserunt sed eiusmod
+        aliquip quis in culpa labore esse dolore esse est dolore occaecat veniam, est pariatur.
+        cupidatat mollit enim. Nostrud ipsum pariatur. qui incididunt consectetur officia
+        sunt esse culpa do in do in est magna ut velit aliqua. consequat. consectetur et
+        cupidatat adipisicing dolore culpa ut ea officia ex tempor adipisicing dolor in
+        tempor ad ad est nulla sit veniam, cupidatat enim aliqua. nostrud dolore eiusmod
+        anim magna non in ad laborum. sed Excepteur aliquip occaecat in aute. Ut elit, ut
+        Duis laboris culpa velit mollit quis aliqua. eu consequat. consectetur in ad ut
+        et cupidatat pariatur. enim Lorem tempor amet, sunt occaecat ut commodo dolor do
+        aliqua. amet, sed elit, irure Ut ipsum aliquip consequat. ut exercitation do nisi
+        sed amet, irure incididunt labore id incididunt Ut magna commodo nisi fugiat sunt
+        ut ut eiusmod ut consequat. ad cupidatat nostrud cillum in non occaecat incididunt
+        mollit cillum. Sed quis proident, pariatur. eiusmod et qui anim incididunt minim
+        Duis non ullamco cupidatat qui nostrud labore cupidatat consequat. cillum consectetur
+        veniam, cillum quis magna aute culpa laborum. aliqua. minim irure sed laborum. aliquip
+        cupidatat nisi sit laboris in dolor laborum. est sed sunt culpa in sunt do aute
+        ut nulla aliquip cillum eiusmod velit. Sint anim sunt minim ipsum nisi adipisicing
+        eu et cillum deserunt mollit est qui in nulla mollit labore occaecat nulla ea velit
+        in esse veniam, eu labore tempor aute qui aliquip undefined in in proident, ea eiusmod
+        est magna labore occaecat irure pariatur. voluptate dolore in anim aliquip Duis
+        culpa cillum enim veniam, velit eiusmod. Aute ut voluptate Ut ex fugiat sed consectetur
+        fugiat nulla dolor commodo Ut adipisicing exercitation nulla aliqua. magna ea consequat.
+        deserunt qui amet, aute enim nulla dolor qui exercitation voluptate consequat. Ut
+        deserunt eu Duis dolor elit, sed dolor undefined mollit reprehenderit laborum. voluptate
+        commodo labore nulla sunt elit, deserunt sunt in magna. Amet, ut consectetur deserunt
+        cillum mollit voluptate quis labore laborum. consequat. laboris commodo ipsum Duis
+        do qui dolore dolor qui sint sed et sit esse incididunt amet, cupidatat sed ex ut
+        esse cupidatat occaecat aliquip dolore nulla Duis cupidatat tempor sed id Excepteur
+        non sit consequat. non veniam, officia dolor eiusmod do non commodo id quis incididunt
+        labore ea labore culpa id consectetur ad adipisicing aliqua. Nisi veniam, consectetur
+        eu consequat. reprehenderit in elit, ad nisi occaecat sed exercitation undefined
+        pariatur. ea occaecat magna irure occaecat eu aliquip pariatur. commodo dolore elit,
+        eu in dolor magna laborum. id ea aute Duis amet, ut nostrud laboris dolor esse officia
+        anim fugiat in ut amet, voluptate mollit adipisicing ex anim ipsum deserunt commodo
+        irure Ut voluptate aliqua. ipsum dolor commodo voluptate nostrud consectetur amet,
+        Excepteur pariatur. Sed tempor Duis nulla dolor aute aute laborum. sit sit aute
+        proident, quis ullamco aliquip Lorem ex ut voluptate occaecat cillum dolore ex cillum
+        in veniam, velit velit enim in adipisicing id officia deserunt dolore occaecat esse
+        Ut consectetur Lorem in do eu nisi cillum Excepteur reprehenderit tempor dolore
+        quis esse qui ut ullamco eiusmod ut non. Duis reprehenderit veniam, tempor in anim
+        ullamco Lorem Excepteur mollit minim ex in enim pariatur. ullamco id laborum. nulla
+        proident, in dolore reprehenderit nulla ut et velit consectetur Duis in mollit dolor
+        ullamco dolore commodo ullamco fugiat aliquip dolore laboris in qui ea ipsum consectetur
+        enim sed ut nulla esse irure non minim. Elit, id irure eiusmod esse dolore adipisicing
+        deserunt minim aliqua. tempor dolor amet, quis aliqua. Duis qui dolore in et magna
+        sunt Duis deserunt nostrud officia velit ullamco ut ut enim incididunt nostrud nostrud
+        aliquip qui quis sint id exercitation deserunt est anim magna ea adipisicing do
+        Duis incididunt nostrud in ad qui veniam, dolore ullamco adipisicing tempor dolor
+        exercitation laboris in commodo Duis proident, Duis voluptate velit Excepteur aute.
+        Deserunt fugiat
+    </p>
+</body>
+</html>
